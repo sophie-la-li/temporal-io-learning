@@ -2,6 +2,7 @@
 A sandbox to learn Temporal.io usage with Python, TypeScript and Next.js.
 
 # Getting Started
+- cp server/temporal.db.new server/temporal.db
 - docker compose up -d
 - server ui: http://localhost:8233
 - frontend: http://localhost:3000
