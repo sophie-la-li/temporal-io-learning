@@ -6,7 +6,7 @@ from temporalio.worker import Worker
 
 from activities import BankingActivities
 from shared import MONEY_TRANSFER_TASK_QUEUE_NAME
-from workflows import MoneyTransfer
+from workflows import oneClickBuy
 
 
 async def main() -> None:
@@ -15,9 +15,9 @@ async def main() -> None:
     activities = BankingActivities()
     worker: Worker = Worker(
         client,
-        task_queue=MONEY_TRANSFER_TASK_QUEUE_NAME,
-        workflows=[MoneyTransfer],
-        activities=[activities.withdraw, activities.deposit, activities.refund],
+        task_queue="ecommerce-oneclick",
+        workflows=[oneClickBuy],
+        activities=[activities.purchase],
     )
     await worker.run()
 
