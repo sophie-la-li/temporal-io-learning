@@ -1,0 +1,34 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      target: dev
+    command: tail -f /dev/null
+    volumes:
+      - ./backend:/app
+    user: "${UID:-1000}:${GID:-1000}"
+    links:
+      - temporal-server
+
+  frontend:
+    build:
+      context: ./frontend
+      target: dev
+    command: npm run dev #tail -f /dev/null
+    volumes:
+      - ./frontend:/app
+    user: "${UID:-1000}:${GID:-1000}"
+    links:
+      - temporal-server
+    ports:
+      - '3000:3000'
+
+  temporal-server:
+    image: temporalio/temporal:latest
+    command: server start-dev --ip 0.0.0.0 --db-filename /home/temporal/temporal.db
+    volumes:
+      - ./server/temporal.db:/home/temporal/temporal.db
+    ports:
+      - '7233:7233'
+      - '8233:8233'
+
