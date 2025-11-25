@@ -1,4 +1,4 @@
-# python-ml-learning
+# temporal-io-learning
 A sandbox to learn Temporal.io usage with Python, TypeScript and Next.js.
 
 # Getting Started
