@@ -7,6 +7,7 @@ ENV APP_DIR /app
 RUN mkdir -p $APP_DIR \
     && chown node:node $APP_DIR
 COPY . $APP_DIR
+#RUN cd $APP_DIR && npm install
 
 ### Development
 FROM base AS dev

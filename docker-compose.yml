@@ -14,7 +14,7 @@ services:
     build:
       context: ./frontend
       target: dev
-    command: npm run dev #tail -f /dev/null
+    command: bash -c "npm install && npm run dev" #tail -f /dev/null
     volumes:
       - ./frontend:/app
     user: "${UID:-1000}:${GID:-1000}"
