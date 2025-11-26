@@ -1,19 +1,21 @@
-# @@@SNIPSTART python-money-transfer-project-template-shared
+
 from dataclasses import dataclass
 
-MONEY_TRANSFER_TASK_QUEUE_NAME = "TRANSFER_MONEY_TASK_QUEUE"
-
+@dataclass
+class NetworkConfig:
+    id: str
+    input: list[str]
+    expected_output: list[str]
+    hidden_neuron_layer_size: int
+    hidden_neuron_layers: int
+    iterations_before_result: int
 
 @dataclass
-class PaymentDetails:
-    source_account: str
-    target_account: str
-    amount: int
-    reference_id: str
+class NetworkResult:
+    iterations: int
+    last_input: list[int]
+    last_output: list[int]
 
 @dataclass
-class PurchaseData:
-    reference_id: int
-
-
-# @@@SNIPEND
+class NetworkList:
+    networks: list[NetworkConfig]

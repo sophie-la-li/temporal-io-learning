@@ -1,73 +1,46 @@
-# @@@SNIPSTART python-money-transfer-project-template-withdraw
+
 import asyncio
+import time
 
 from temporalio import activity
 
-from banking_service import BankingService, InvalidAccountError
-from shared import PaymentDetails
-from shared import PurchaseData
+from shared import NetworkConfig
+from shared import NetworkResult
+from shared import NetworkList
 
-class BankingActivities:
+class NetworkActivities:
     def __init__(self):
-        self.bank = BankingService("bank-api.example.com")
+        pass
 
     @activity.defn
-    async def purchase(self, data: PurchaseData) -> str:
-        print(f"test {data.reference_id}")
+    async def getAll(self) -> NetworkList:
+        c: NetworkConfig = NetworkConfig(
+            "test",
+            ["1", "b"],
+            ["3 + 5"],
+            2,
+            3,
+            4
+        )
+
+        list: NetworkList = NetworkList([c])
+        return list
 
     @activity.defn
-    async def withdraw(self, data: PaymentDetails) -> str:
-        reference_id = f"{data.reference_id}-withdrawal"
-        try:
-            confirmation = await asyncio.to_thread(
-                self.bank.withdraw, data.source_account, data.amount, reference_id
-            )
-            return confirmation
-        except InvalidAccountError:
-            raise
-        except Exception:
-            activity.logger.exception("Withdrawal failed")
-            raise
+    async def delete(self, data: NetworkConfig) -> str:
+        time.sleep(1)
+        print(f"delete {data}")
+        return "test"
 
-    # @@@SNIPEND
-    # @@@SNIPSTART python-money-transfer-project-template-deposit
     @activity.defn
-    async def deposit(self, data: PaymentDetails) -> str:
-        reference_id = f"{data.reference_id}-deposit"
-        try:
-            confirmation = await asyncio.to_thread(
-                self.bank.deposit, data.target_account, data.amount, reference_id
-            )
-            """
-            confirmation = await asyncio.to_thread(
-                self.bank.deposit_that_fails,
-                data.target_account,
-                data.amount,
-                reference_id,
-            )
-            """
-            return confirmation
-        except InvalidAccountError:
-            raise
-        except Exception:
-            activity.logger.exception("Deposit failed")
-            raise
+    async def execute(self, data: NetworkConfig) -> NetworkResult:
+        time.sleep(1)
+        print(f"execute {data}")
 
-    # @@@SNIPEND
+        result: NetworkResult = NetworkResult(
+            iterations = 123,
+            last_input = [1,2],
+            last_output = [3]
+        )
 
-    # @@@SNIPSTART python-money-transfer-project-template-refund
-    @activity.defn
-    async def refund(self, data: PaymentDetails) -> str:
-        reference_id = f"{data.reference_id}-refund"
-        try:
-            confirmation = await asyncio.to_thread(
-                self.bank.deposit, data.source_account, data.amount, reference_id
-            )
-            return confirmation
-        except InvalidAccountError:
-            raise
-        except Exception:
-            activity.logger.exception("Refund failed")
-            raise
-
-    # @@@SNIPEND
+        return result

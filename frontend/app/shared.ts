@@ -1,6 +1,4 @@
 
-export const TASK_QUEUE_NAME = 'ecommerce-oneclick';
-
 export const testJson = (input: string) => {
     try {
         JSON.parse(input);
