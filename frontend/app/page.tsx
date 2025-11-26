@@ -9,13 +9,13 @@ import { testJson } from './shared';
 const NN_BUTTON_STYLE = "bg-blue-300 hover:bg-blue-500 p-2 rounded-md m-1"
 
 const NN_TRAINING_CONFIG_TPL = {
-    id: "test-nn-1",
+    id: "multiplying-network",
     input: [
         "rand:0:10",
         "rand:0:10"
     ],
     expected_output: [
-        "i1 + i2"
+        "i0 * i1"
     ],
     hidden_neuron_layer_size: 0,
     hidden_neuron_layers: 0,
@@ -25,6 +25,7 @@ const NN_TRAINING_CONFIG_TPL = {
 const NN_TRAINING_OUTPUT_TPL = {
     iterations: 0,
     last_input: [0],
+    last_expected_output: [0],
     last_output: [0]
 }
 
@@ -105,8 +106,6 @@ const NnTraining: React.FC = () => {
             body: JSON.stringify({ networkConfig, transactionId }),
         }).then((response) => {
             response.json().then((data) => {
-                console.log(data);
-
                 setState('DELETED');
                 updateNetworkList();
             });
@@ -116,6 +115,7 @@ const NnTraining: React.FC = () => {
     };
 
     const executeNetwork = () => {
+        let firstStart = stateRef.current != "TRAINING"
         setState('TRAINING');
 
         if (!testJson(networkConfig)) {
@@ -132,6 +132,11 @@ const NnTraining: React.FC = () => {
         }).then((response) => {
             response.json().then((data) => {
                 setOutputData(data);
+
+                if (firstStart) {
+                    updateNetworkList();
+                }
+
                 setTimeout(() => {
                     if (stateRef.current == "TRAINING") {
                         executeNetwork();
@@ -186,12 +191,16 @@ const NnTraining: React.FC = () => {
                 <table className="table-fixed">
                     <tbody>
                     <tr>
-                        <td className="w-30">Iterations:</td>
+                        <td className="w-50">Iterations:</td>
                         <td>{outputData.iterations}</td>
                     </tr>
                     <tr>
                         <td>Last Input:</td>
                         <td>{outputData.last_input.map((number) => number + ", ")}</td>
+                    </tr>
+                    <tr>
+                        <td>Last Expected Output:</td>
+                        <td>{outputData.last_expected_output.map((number) => number + ", ")}</td>
                     </tr>
                     <tr>
                         <td>Last Output:</td>

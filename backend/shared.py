@@ -1,4 +1,5 @@
 
+import json
 from dataclasses import dataclass
 
 @dataclass
@@ -14,8 +15,9 @@ class NetworkConfig:
 class NetworkResult:
     iterations: int
     last_input: list[int]
+    last_expected_output: list[int]
     last_output: list[int]
 
 @dataclass
 class NetworkList:
-    networks: list[NetworkConfig]
+    networks: list[dict]

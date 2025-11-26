@@ -3,7 +3,7 @@ services:
     build:
       context: ./backend
       target: dev
-    command: tail -f /dev/null
+    command: tail -f /dev/null # python run_worker.py
     volumes:
       - ./backend:/app
     user: "${UID:-1000}:${GID:-1000}"
@@ -14,7 +14,7 @@ services:
     build:
       context: ./frontend
       target: dev
-    command: bash -c "npm install && npm run dev" #tail -f /dev/null
+    command: bash -c "npm install && npm run dev" # tail -f /dev/null
     volumes:
       - ./frontend:/app
     user: "${UID:-1000}:${GID:-1000}"
