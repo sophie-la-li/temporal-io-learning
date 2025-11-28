@@ -17,9 +17,10 @@ const NN_TRAINING_CONFIG_TPL = {
     expected_output: [
         "i0 * i1"
     ],
-    hidden_neuron_layer_size: 0,
-    hidden_neuron_layers: 0,
-    iterations_before_result: 10
+    hidden_neuron_layer_size: 10,
+    hidden_neuron_layers: 1,
+    iterations_before_result: 1000,
+    epsilon: 0.01
 }
 
 const NN_TRAINING_OUTPUT_TPL = {
@@ -167,6 +168,12 @@ const NnTraining: React.FC = () => {
             </div>
             <div className="bg-white m-2 p-5">
                 <h3 className="font font-extrabold text-gray-900 sm:text-2xl mb-5">Config</h3>
+                <p className="m-5 ml-0">
+                    Note: For existing networks, the length of the input and expected_output array will no longer
+                    be updated. Same for the hidden_neuron_layer_size and hidden_neuron_layers options.
+                    You still can change the input and expected_output values and iterations_before_result and epsilon options.
+                    If you wan't to change more, you will need to delete the network and recreate it.
+                </p>
                 <textarea
                     className="border"
                     value={networkConfig}

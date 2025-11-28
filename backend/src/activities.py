@@ -13,7 +13,7 @@ from temporalio import activity
 from shared import NetworkConfig
 from shared import NetworkResult
 from shared import NetworkList
-from neural_network import NeuralNetwork
+from sll_neural_network import NeuralNetwork as NN
 
 class NetworkActivities:
     def __init__(self):
@@ -55,14 +55,17 @@ class NetworkActivities:
             data["iterations"] = 0
             data["weights"] = {}
 
-        network: NeuralNetwork = NeuralNetwork()
+        network: NN.NeuralNetwork = NN.NeuralNetwork()
         network.inputSize = len(data["config"]["input"])
         network.outputSize = len(data["config"]["expected_output"])
         network.hiddenSize = data["config"]["hidden_neuron_layer_size"]
         network.hiddenNumber = data["config"]["hidden_neuron_layers"]
         network.weights = data["weights"]
+        network.epsilon = config.epsilon
 
         for i in range(config.iterations_before_result):
+            print("training network: " + str(i+1) + "/" + str(config.iterations_before_result), end='\r')
+
             input: list = []
             expected_output: list = []
 

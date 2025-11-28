@@ -57,6 +57,6 @@ class ExecuteNetwork:
         return await workflow.execute_activity_method(
             NetworkActivities.execute,
             data,
-            start_to_close_timeout = timedelta(seconds=5),
+            start_to_close_timeout = timedelta(seconds=60),
             retry_policy = retry_policy
         )

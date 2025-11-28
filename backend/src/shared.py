@@ -10,6 +10,7 @@ class NetworkConfig:
     hidden_neuron_layer_size: int
     hidden_neuron_layers: int
     iterations_before_result: int
+    epsilon: float
 
 @dataclass
 class NetworkResult:

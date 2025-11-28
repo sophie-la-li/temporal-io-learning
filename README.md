@@ -4,7 +4,7 @@ A sandbox to learn Temporal.io usage with Python, TypeScript and Next.js.
 # Getting Started
 - cp server/temporal.db.new server/temporal.db
 - docker compose up -d
-- execute "python run_worker.py" in backend container
+- execute "poetry install" and "bin/run run_worker.py" in backend container
 - server ui: http://localhost:8233
 - frontend: http://localhost:3000
 
