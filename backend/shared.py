@@ -11,5 +11,9 @@ class PaymentDetails:
     amount: int
     reference_id: str
 
+@dataclass
+class PurchaseData:
+    reference_id: int
+
 
 # @@@SNIPEND

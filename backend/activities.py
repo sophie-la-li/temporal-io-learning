@@ -5,11 +5,15 @@ from temporalio import activity
 
 from banking_service import BankingService, InvalidAccountError
 from shared import PaymentDetails
-
+from shared import PurchaseData
 
 class BankingActivities:
     def __init__(self):
         self.bank = BankingService("bank-api.example.com")
+
+    @activity.defn
+    async def purchase(self, data: PurchaseData) -> str:
+        print(f"test {data.reference_id}")
 
     @activity.defn
     async def withdraw(self, data: PaymentDetails) -> str:
