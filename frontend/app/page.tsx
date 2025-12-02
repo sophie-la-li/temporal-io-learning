@@ -61,7 +61,7 @@ const NnTraining: React.FC = () => {
     stateRef.current = state;
 
     const updateNetworkList = () => {
-        fetch('/api/getAllNetworks', {
+        fetch('/api/get_all_networks', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ const NnTraining: React.FC = () => {
             return;
         }
 
-        fetch('/api/deleteNetwork', {
+        fetch('/api/delete_network', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ const NnTraining: React.FC = () => {
             return;
         }
 
-        fetch('/api/executeNetwork', {
+        fetch('/api/execute_network', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -9,30 +9,33 @@ import random
 import re
 
 from temporalio import activity
+from sll_neural_network import NeuralNetwork as NN
 
 from shared import NetworkConfig
 from shared import NetworkResult
 from shared import NetworkList
-from sll_neural_network import NeuralNetwork as NN
 
 class NetworkActivities:
+    networkStoragePath: string = "./networks"
+
     def __init__(self):
         pass
 
     def _getNetworkFilePath(self, config: NetworkConfig) -> str:
         hashedId: string = hashlib.md5(config.id.encode('utf-8')).hexdigest()
-        filePath: string = f"./networks/{hashedId}.nn"
+        filePath: string = f"{self.networkStoragePath}/{hashedId}.nn"
         return filePath
 
     @activity.defn
     async def getAll(self) -> NetworkList:
         list: NetworkList = NetworkList([])
-        path: str = "./networks"
-        directory = os.fsencode(path)
+        directory = os.fsencode(self.networkStoragePath)
         for file in os.listdir(directory):
             filename = os.fsdecode(file)
             if filename.endswith(".nn"):
-                data = json.load(open(path + "/" + filename))
+                data = json.load(open(
+                    self.networkStoragePath + "/" + filename
+                ))
                 list.networks.append(data["config"])
         return list
 
@@ -49,13 +52,13 @@ class NetworkActivities:
         data: dict = {}
 
         if os.path.isfile(filePath):
-            data = json.load(open(filePath))
+            data = json.load(open(filePath, "r"))
         else:
             data["config"] = config.__dict__
             data["iterations"] = 0
             data["weights"] = {}
 
-        network: NN.NeuralNetwork = NN.NeuralNetwork()
+        network = NN.NeuralNetwork()
         network.inputSize = len(data["config"]["input"])
         network.outputSize = len(data["config"]["expected_output"])
         network.hiddenSize = data["config"]["hidden_neuron_layer_size"]
@@ -97,7 +100,7 @@ class NetworkActivities:
                     expected_output.append(f)
                     continue
 
-            output: list = network.train(input, expected_output)
+            output: list = network.train(input, expected_output, network)
             data["iterations"] += 1
 
         result: NetworkResult = NetworkResult(
@@ -108,5 +111,5 @@ class NetworkActivities:
         )
 
         data["weights"] = network.weights
-        json.dump(data, open(filePath, 'w'), indent = "    ")
+        json.dump(data, open(filePath, "w"), indent = "    ")
         return result
